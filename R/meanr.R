@@ -1,7 +1,8 @@
 new_function <- function(filepath, column){
   dataframe <- read_csv(filepath) %>%
     select( {{column}} ) %>% 
-    na.omit( )  
+    na.omit( )
+  #return(dataframe)
   new_cal <- dataframe %>% 
     mutate(new_col = weight / 2)
   problem_values <- new_cal %>% 
