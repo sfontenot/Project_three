@@ -1,4 +1,4 @@
-#THis is it
+#This is it
 new_function <- function(filepath, column){
   dataframe <- read_csv(filepath) %>%
     select( {{column}} ) %>% 
