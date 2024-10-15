@@ -1,0 +1,21 @@
+ButterflySpecies: 
+  What kind of species of butterfly you are dealing with
+  
+Year:
+    year the data was collected 
+    
+Day:
+  The day the data was collected
+  
+Cumulative_Rain:
+  How much rain happened in the specified parameters
+  
+SpringTemp:
+  tempture in the sping
+  
+SummerTemp:
+   Tempture in the summer
+   
+Site:
+
+  Where the data was taken from
