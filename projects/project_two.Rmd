@@ -1,0 +1,248 @@
+---
+title: "Project Two"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+Due Oct. 25 at 11:59 PM. 
+
+For this first part of the exam, you can either use `surveys_complete.csv` or your own data. If you are using your own data, you must have data in which you think you have a numerical predictor variable and a numerical response variable. If you are using `surveys_complete`, you can use weight and hindfoot_length for this.
+
+Save this file in your `projects` directory. You can either save it in a project two subdirectory, or just put it in projects. Either way is fine.
+
+1) Load in your data. Which variable will you be using as a predictor, and which as a response? (5 pts)
+
+```{r}
+
+file <- "../data/surveys.csv"
+surveys_complete <- read.csv(file) %>%
+  select(species_id, hindfoot_length, weight, sex) %>%
+  filter(!is.na(hindfoot_length) & !is.na(weight)) %>% 
+  mutate(hindfoot_length, weight)
+# read in data here
+print(surveys_complete)
+
+```
+
+```
+predictor is hindfoot_length
+response is weight 
+# Answer which column is predictor and which is response
+```
+
+
+2) Plot the two against each other with a scatter plot. Do the data appear to be related linearly? (5 pts)
+
+
+```{r}
+
+
+
+
+ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length))+geom_point()
+# Plot here
+```
+
+```
+Looks like it is but it curves down and then stays the same over the weight
+#Answer here
+```
+
+
+3) Fit the linear model. View the summary. (5 pts)
+
+
+```{r}
+model <- lm(hindfoot_length ~ weight, data = surveys_complete)
+summary(model)
+ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Scatter plot with linear model",
+       x = "Weight",
+       y = "Hindfoot Length")# Code here
+```
+
+4)Does the summary make sense when you compare it to the plot you made? Does our model have good predictive power? Evaluate the residual standard error, intercept, and R-Squared in particular. Would you say your predictor predicts the response? (10 pts)
+
+
+```
+Id say that my predictor is close but not close enough. There are ways to make it a bit better. The weight does not fully explain the hindfoot_length.# Answer here
+```
+
+
+5) Plot the model on the graph. Increase the size of the text so it is comfortably readable at 5 feet. Make sure axis labels are readable and not overlapping with one another. (5 pts)
+
+```
+ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_point(size = 3) +  # Increase size of points
+  geom_smooth(method = "lm", se = FALSE, color = "blue", size = 1.5) +  
+  labs(title = "Scatter plot with linear model",
+       x = "Weight",
+       y = "Hindfoot Length") +
+  theme(
+    plot.title = element_text(size = 20, face = "bold"),
+    axis.title.x = element_text(size = 16),
+    axis.title.y = element_text(size = 16),
+    axis.text.x = element_text(size = 14),
+    axis.text.y = element_text(size = 14)
+  ) +
+  theme_minimal() 
+  # Code here
+```
+
+
+6) Check the normality of the residuals. Do they look OK? Are we violating assumptions? (5 pts)
+
+```{r}
+
+ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_point(size = 2) +  # Increase size of points
+  geom_smooth(method = "lm", se = FALSE, color = "blue", size = 1.5) +  # Increase size of line
+  labs(title = "Scatter plot with linear model",
+       x = "Weight",
+       y = "Hindfoot Length") +
+  theme(
+    plot.title = element_text(size = 20, face = "bold"),
+    axis.title.x = element_text(size = 16),
+    axis.title.y = element_text(size = 16),
+    axis.text.x = element_text(size = 14),
+    axis.text.y = element_text(size = 14)
+  ) +
+  theme_minimal()#Code here
+residuals <- residuals(model)
+hist(residuals, breaks = 10, main = "Histogram of Residuals", xlab = "Residuals", col = "pink", border = "black")
+
+
+
+
+```
+
+Why is normality of residuals important? 
+
+```{r}
+
+#code for graph of facets
+ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_point(size = 1) + 
+  geom_smooth(method = "lm", se = FALSE, color = "blue", linewidth = .5) +  
+  labs(title = "Scatter plot with linear model by Species",
+       x = "Weight",
+       y = "Hindfoot Length") +
+  theme(
+    plot.title = element_text(size = 20, face = "bold"),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size = 8)
+  ) +
+  theme_minimal() +  
+  facet_wrap(~ species_id)
+#It is important because it allows the reseacher to view data individually based on what parameters they want. In mine, i am using hindfoot_length and weight#Answer here
+```
+
+7) If you are using `surveys_complete`: Is there interspecific variation in the linear model? Hint: look at our prior work with facet plots. (15 pts) 
+
+If you are *not* using  `surveys_complete`: Do you think there are groupings within your data that may have a separate linear model? Try grouping the data by that variable and redoing the lm. If this would not make sense for your data, you may also attempt to do multiple predictor variables. (15 pts)
+
+```{r}
+Looking at the graphs above it looks like there is not an interspecific variation due to there being similar looking graphs across species_id#code here
+```
+
+## Part Two
+
+In this portion, you are free to use your own data if you have a categorical predictor variable and a response variable. Otherwise, you may use the columns sex and weight in `surveys_complete`
+
+1) First, plot the data grouped by sex (5 pts)
+
+```{r}
+grouped <- surveys_complete %>% 
+  group_by(sex) %>% 
+  summarize(mean_weight = mean(weight))
+print(grouped)
+ggplot(data = surveys_complete, mapping = aes(x = sex, y = weight)) +  geom_boxplot() + geom_jitter(width = 0.3) + labs(title = "Weight Distribution by Sex", 
+       x = "Sex",
+       y = "weight")
+# plot code here
+```
+
+2) Try an ANOVA of this data (5 pt)
+
+```{r}
+anova_result <- aov(weight ~ sex, data = surveys_complete)
+
+summary(anova_result)# ANOVA code here
+```
+
+3) How about a linear model? What information does this give you that an ANOVA can't? (5 pts)
+
+
+```{r}
+model <- lm(weight ~ sex, data = surveys_complete)
+summary(model)#Code here
+```
+
+```
+It gives you error and also the intercepts which can not be seen in the anova #Answer here
+```
+
+3) Plot the lm with the data, with points colored by sex. (10 pts)
+
+
+```{r}
+model <- lm(weight ~ sex, data = surveys_complete)
+
+# Plotting using ggplot2
+ggplot(data = surveys_complete, mapping = aes(x = sex, y = weight, color = sex)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Linear Model of Weight by Sex",
+       x = "Sex",
+       y = "Weight")#Plot code here
+```
+
+4) Choose any model we've looked at so far, but use two predictor variables. Perform an LM, plot the results, and state if this changes your interpretation of the relationship between variables (10 pts)
+
+```{r}
+glm_model <- glm(weight ~ sex + hindfoot_length, data = surveys_complete, family = gaussian())
+summary(glm_model)# LM Code Here 
+```
+
+```{r}
+ggplot(data = surveys_complete, mapping = aes(x = hindfoot_length, y = weight, color = sex)) +
+  geom_point(size = 2, shape = 6) +
+  geom_smooth(method = "glm", method.args = list(family = "gaussian"), se = FALSE, linetype = "dashed", size = 1.6) +
+  scale_color_manual(values = c("blue", "purple","yellow"))   +
+  labs(title = "GLM of Weight by Hindfoot Length and Sex",
+       x = "Hindfoot Length",
+       y = "Weight") +
+  theme_minimal()# Plot Code Here 
+```
+
+```
+Id say the plot does not chnage my interpretation. It looks like the males and females are pretty evenly distributed. There were some NAs left ( I personally like the color contrast) # Text answer here
+```
+
+## Part Three
+
+
+1) Add and commit this document (5 pts)
+
+```
+go to the top right of r studio 
+go to the "Git" tab
+click on the "projects white square and commit it #Commands here
+```
+
+2) Push your changes to github (10 pts)
+
+```
+once it is commited you just push the green push sign and it is done.#Commands here
+```
+
+
+
+# MS students
+
+My expectation is that you'll do this with your own data. If any part of this doesn't make sense with your data, please get in touch ASAP so we can work it out.
