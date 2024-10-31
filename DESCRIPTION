@@ -1,0 +1,19 @@
+Package: quantum
+Title: Produce weights that are within a limit of 5
+Version: 0.0.0.9000
+Authors@R: 
+    person("Senora", "Fontenot", , "senora.fontenot@selu.edu", role = c("aut", "cre"))
+Description: What the package does (one paragraph).
+Imports: 
+    dplyr,
+    magrittr,
+    readr,
+    stats
+License: MIT
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
