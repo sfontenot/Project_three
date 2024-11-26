@@ -4,12 +4,12 @@
 \alias{bubble}
 \title{Title bubbles}
 \usage{
-bubble(filepath, column)
+bubble(file, column)
 }
 \arguments{
-\item{filepath}{Give the function the filepath}
+\item{file}{give the function a file path}
 
-\item{column}{give the functions a column you want to observe}
+\item{column}{give the function the column you wish to observe}
 }
 \value{
 Problem values

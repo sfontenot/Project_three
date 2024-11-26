@@ -13,7 +13,51 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+## Intriducing the quantum compute package
 
+a few words about your motivation in writing this R package. What is it meant for, to do and what data does it work with?
+
+## Installation Intructions
 ```{r setup}
+devtools::install_github("sfontenot/Project_three")
 library(quantum)
+```
+
+## Where to get the data
++ could use google sheets and give people intructions for that 
++ can stash data in an R package
+
+## Using Function One
+
+```{r warning=FALSE}
+
+quantum::clean()
+
+```
++This Function uses one argument and that is simply a file path. This will clean your data and also change the characters to factors. 
+
+
+## Using function Two and getting data less than 5
+```{r}
+quantum::bubble()
+
+```
+
+## Using Function Three and looking at the season relationship to Butterflies
+
+```{r}
+
+quantum::seasons()
+```
+
+
+## Using Function Four
+```{r}
+
+quantum::ANOVA()
+```
+## Using Function Five
+
+```{r}
+quantum::plot()
 ```

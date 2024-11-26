@@ -1,5 +1,5 @@
 Package: quantum
-Title: Produce weights that are within a limit of 5
+Title: Produce an analysis of butterflies
 Version: 0.0.0.9000
 Authors@R: 
     person("Senora", "Fontenot", , "senora.fontenot@selu.edu", role = c("aut", "cre"))
@@ -8,7 +8,10 @@ Imports:
     dplyr,
     magrittr,
     readr,
-    stats
+    stats,
+    ggplot2,
+    tidyr,
+    multiview
 License: MIT
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

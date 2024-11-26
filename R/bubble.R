@@ -1,16 +1,14 @@
 #' Title bubbles
 #'
-#' @param filepath Give the function the filepath
-#' @param column give the functions a column you want to observe
+#' @param file give the function a file path
+#' @param column give the function the column you wish to observe
 #'
 #' @return Problem values
 #' @export
-bubble <- function(filepath, column){
-  dataframe <- read_csv(filepath) %>%
-    select( {{column}} ) %>%
-    na.omit( )
-  new_cal <- dataframe %>%
-    mutate(new_cal = weight / 2)
+bubble <- function(file, column){
+  df <- clean(file)
+  new_cal <- df %>%
+    mutate(new_cal = !!sym(column)/ 2)
   problem_values <- new_cal %>%
     filter( new_cal <= 5)
   print(problem_values)
