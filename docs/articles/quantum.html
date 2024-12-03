@@ -68,8 +68,896 @@
 
     
     
+<div class="section level2">
+<h2 id="introducing-the-quantum-compute-package">Introducing the quantum compute package<a class="anchor" aria-label="anchor" href="#introducing-the-quantum-compute-package"></a>
+</h2>
+<p>It is known that butterflies can be seen frequently in the summer
+time. Out of curiosity, I wanted to know which season was the best for
+the species of butterflies being observed in the given data set. The
+Quantum Compute package is meant to clean data and produce an analysis
+of butterfly sightings, and produce and output of what season is the
+best for each species being observed.</p>
+</div>
+<div class="section level2">
+<h2 id="installation-intructions">Installation Intructions<a class="anchor" aria-label="anchor" href="#installation-intructions"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">quantum</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: usethis</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"sfontenot/Project_three"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Using GitHub PAT from the git credential store.</span></span>
+<span><span class="co">#&gt; Downloading GitHub repo sfontenot/Project_three@HEAD</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #00BBBB;">R CMD build</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; * checking for file ‘/tmp/Rtmpk4aqT6/remotes68595b779673/sfontenot-Project_three-2f3c85f/DESCRIPTION’ ... OK</span></span>
+<span><span class="co">#&gt; * preparing ‘quantum’:</span></span>
+<span><span class="co">#&gt; * checking DESCRIPTION meta-information ... OK</span></span>
+<span><span class="co">#&gt; * checking for LF line-endings in source and make files and shell scripts</span></span>
+<span><span class="co">#&gt; * checking for empty or unneeded directories</span></span>
+<span><span class="co">#&gt; * looking to see if a ‘data/datalist’ file should be added</span></span>
+<span><span class="co">#&gt; * building ‘quantum_0.0.0.9000.tar.gz’</span></span>
+<span><span class="co">#&gt; Warning: invalid uid value replaced by that for user 'nobody'</span></span>
+<span><span class="co">#&gt; Installing package into '/tmp/Rtmp2zsYBT/temp_libpath4f7d28d50e22'</span></span>
+<span><span class="co">#&gt; (as 'lib' is unspecified)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">quantum</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'quantum'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:graphics':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     plot</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     plot</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="where-to-get-the-data">Where to get the data<a class="anchor" aria-label="anchor" href="#where-to-get-the-data"></a>
+</h2>
+<p>The following URL need to be assigned a variable</p>
+<p><a href="https://raw.githubusercontent.com/sfontenot/Project_three/refs/heads/main/data/Butterly_data_by_Site.csv" class="external-link uri">https://raw.githubusercontent.com/sfontenot/Project_three/refs/heads/main/data/Butterly_data_by_Site.csv</a></p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Attaching core tidyverse packages</span> ──────────────────────── tidyverse 2.0.0 ──</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr    </span> 1.1.4     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">readr    </span> 2.1.5</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">forcats  </span> 1.0.0     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">stringr  </span> 1.5.1</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">ggplot2  </span> 3.5.1     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tibble   </span> 3.2.1</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">lubridate</span> 1.9.3     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr    </span> 1.3.1</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">purrr    </span> 1.0.2     </span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Conflicts</span> ────────────────────────────────────────── tidyverse_conflicts() ──</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">filter()</span> masks <span style="color: #0000BB;">stats</span>::filter()</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">lag()</span>    masks <span style="color: #0000BB;">stats</span>::lag()</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use the conflicted package (<span style="color: #0000BB; font-style: italic;">&lt;http://conflicted.r-lib.org/&gt;</span>) to force all conflicts to become errors</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
+<span><span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/sfontenot/Project_three/refs/heads/main/data/Butterly_data_by_Site.csv"</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">384</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span> (2): ButterflySpecies, Site</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (5): Year, Day, Cumulative_Rain, SpringTemp, SummerTemp</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_csv</a></span><span class="op">(</span><span class="va">data</span>, <span class="st">"Butterly_data_by_Site.csv"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="using-function-one">Using Function One<a class="anchor" aria-label="anchor" href="#using-function-one"></a>
+</h2>
+<ul>
+<li><p>This function takes only one argument, which is the file path in
+which the data set is stored. Assign the file path to a variable. It
+will clean the data of NA’s and “non-observed” values.</p></li>
+<li><p>Example</p></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
+<span><span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"../data/Butterly_data_by_Site.csv"</span></span>
+<span><span class="fu">quantum</span><span class="fu">::</span><span class="fu"><a href="../reference/clean.html">clean</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          ButterflySpecies Year Day Cumulative_Rain SpringTemp SummerTemp</span></span>
+<span><span class="co">#&gt; 1   Glaucopsyche lygdamus 1931 133        178.4484       6.85      15.35</span></span>
+<span><span class="co">#&gt; 2         Cupido amyntula 1931 143        173.2576       6.85      15.35</span></span>
+<span><span class="co">#&gt; 3         Cupido amyntula 1931 158        174.7535       6.85      15.35</span></span>
+<span><span class="co">#&gt; 4   Glaucopsyche lygdamus 1931 212        172.2788       6.85      15.35</span></span>
+<span><span class="co">#&gt; 5         Cupido amyntula 1933 142        177.4902       5.40      14.92</span></span>
+<span><span class="co">#&gt; 6   Glaucopsyche lygdamus 1933 154        178.7462       5.40      14.92</span></span>
+<span><span class="co">#&gt; 7   Glaucopsyche lygdamus 1933 156        178.8711       5.40      14.92</span></span>
+<span><span class="co">#&gt; 8      Coenonympha tullia 1933 168        172.3766       5.40      14.92</span></span>
+<span><span class="co">#&gt; 9      Coenonympha tullia 1937 186        179.9240       6.40      15.22</span></span>
+<span><span class="co">#&gt; 10  Glaucopsyche lygdamus 1938 138        170.7959       6.78      15.77</span></span>
+<span><span class="co">#&gt; 11  Glaucopsyche lygdamus 1938 141        175.4622       6.78      15.77</span></span>
+<span><span class="co">#&gt; 12        Cupido amyntula 1938 141        171.4745       6.78      15.77</span></span>
+<span><span class="co">#&gt; 13        Cupido amyntula 1938 143        177.6364       6.78      15.77</span></span>
+<span><span class="co">#&gt; 14     Polygonia gracilis 1938 144        178.0166       6.78      15.77</span></span>
+<span><span class="co">#&gt; 15     Coenonympha tullia 1938 146        179.3500       6.78      15.77</span></span>
+<span><span class="co">#&gt; 18     Coenonympha tullia 1938 146        179.0895       6.78      15.77</span></span>
+<span><span class="co">#&gt; 21     Coenonympha tullia 1938 146        178.7927       6.78      15.77</span></span>
+<span><span class="co">#&gt; 24      Euchloe ausonides 1938 147        179.1857       6.78      15.77</span></span>
+<span><span class="co">#&gt; 25        Cupido amyntula 1938 148        171.5554       6.78      15.77</span></span>
+<span><span class="co">#&gt; 26      Euchloe ausonides 1938 148        177.7596       6.78      15.77</span></span>
+<span><span class="co">#&gt; 27      Euchloe ausonides 1940 127        175.8669       7.70      15.75</span></span>
+<span><span class="co">#&gt; 28    Plebejus icarioides 1940 141        171.3464       7.70      15.75</span></span>
+<span><span class="co">#&gt; 30    Plebejus icarioides 1940 141        173.0046       7.70      15.75</span></span>
+<span><span class="co">#&gt; 32     Coenonympha tullia 1940 186        174.7190       7.70      15.75</span></span>
+<span><span class="co">#&gt; 33    Plebejus icarioides 1941 231        170.4459       8.05      16.39</span></span>
+<span><span class="co">#&gt; 34       Papilio zelicaon 1949 190        174.3116       6.69      14.47</span></span>
+<span><span class="co">#&gt; 35     Coenonympha tullia 1950 155        177.0788       4.68      15.77</span></span>
+<span><span class="co">#&gt; 36    Plebejus icarioides 1950 179        177.1962       4.68      15.77</span></span>
+<span><span class="co">#&gt; 37    Plebejus icarioides 1950 238        179.8041       4.68      15.77</span></span>
+<span><span class="co">#&gt; 38      Euchloe ausonides 1951 160        170.3726       4.89      15.55</span></span>
+<span><span class="co">#&gt; 39    Plebejus icarioides 1951 168        179.1927       4.89      15.55</span></span>
+<span><span class="co">#&gt; 40      Euchloe ausonides 1951 170        174.0501       4.89      15.55</span></span>
+<span><span class="co">#&gt; 41    Plebejus icarioides 1951 171        173.1867       4.89      15.55</span></span>
+<span><span class="co">#&gt; 42    Plebejus icarioides 1951 172        170.0544       4.89      15.55</span></span>
+<span><span class="co">#&gt; 43    Plebejus icarioides 1951 174        178.7485       4.89      15.55</span></span>
+<span><span class="co">#&gt; 44        Strymon melinus 1951 207        175.3668       4.89      15.55</span></span>
+<span><span class="co">#&gt; 45    Plebejus icarioides 1952 195        175.0056       5.67      14.90</span></span>
+<span><span class="co">#&gt; 46    Plebejus icarioides 1952 206        172.7213       5.67      14.90</span></span>
+<span><span class="co">#&gt; 47     Coenonympha tullia 1952 209        174.6930       5.67      14.90</span></span>
+<span><span class="co">#&gt; 48    Plebejus icarioides 1952 224        174.8580       5.67      14.90</span></span>
+<span><span class="co">#&gt; 49       Papilio zelicaon 1953 161        174.3292       6.20      14.75</span></span>
+<span><span class="co">#&gt; 50    Plebejus icarioides 1953 173        174.4071       6.20      14.75</span></span>
+<span><span class="co">#&gt; 51     Coenonympha tullia 1953 191        170.0336       6.20      14.75</span></span>
+<span><span class="co">#&gt; 52     Coenonympha tullia 1956 123        178.3952       5.81      14.89</span></span>
+<span><span class="co">#&gt; 53     Coenonympha tullia 1956 128        173.7995       5.81      14.89</span></span>
+<span><span class="co">#&gt; 54     Coenonympha tullia 1956 130        170.5513       5.81      14.89</span></span>
+<span><span class="co">#&gt; 55     Coenonympha tullia 1956 132        178.0478       5.81      14.89</span></span>
+<span><span class="co">#&gt; 56     Coenonympha tullia 1956 134        176.3015       5.81      14.89</span></span>
+<span><span class="co">#&gt; 57    Plebejus icarioides 1962 210        179.9303       5.18      14.39</span></span>
+<span><span class="co">#&gt; 58       Papilio zelicaon 1962 232        179.8847       5.18      14.39</span></span>
+<span><span class="co">#&gt; 59        Cupido amyntula 1966 129        170.8816       5.95      14.66</span></span>
+<span><span class="co">#&gt; 60       Papilio zelicaon 1966 129        173.0823       5.95      14.66</span></span>
+<span><span class="co">#&gt; 61    Plebejus icarioides 1968 218        170.5478       6.25      14.85</span></span>
+<span><span class="co">#&gt; 62       Papilio zelicaon 1971 238        171.8423       5.36      15.37</span></span>
+<span><span class="co">#&gt; 63       Papilio zelicaon 1973 183        179.4704       6.58      14.43</span></span>
+<span><span class="co">#&gt; 64       Papilio zelicaon 1980 201        170.1857       6.93      14.53</span></span>
+<span><span class="co">#&gt; 65       Papilio zelicaon 1989 142        176.7787       6.20      15.74</span></span>
+<span><span class="co">#&gt; 66       Papilio zelicaon 1989 169        172.5609       6.20      15.74</span></span>
+<span><span class="co">#&gt; 68       Papilio zelicaon 1989 169        178.1223       6.20      15.74</span></span>
+<span><span class="co">#&gt; 70       Papilio zelicaon 1989 171        170.4636       6.20      15.74</span></span>
+<span><span class="co">#&gt; 72       Papilio zelicaon 1989 171        172.7956       6.20      15.74</span></span>
+<span><span class="co">#&gt; 74       Papilio zelicaon 1992 157        172.9061       7.91      16.19</span></span>
+<span><span class="co">#&gt; 80       Papilio zelicaon 1992 157        174.4707       7.91      16.19</span></span>
+<span><span class="co">#&gt; 86       Papilio zelicaon 1992 157        172.3244       7.91      16.19</span></span>
+<span><span class="co">#&gt; 92       Papilio zelicaon 1992 157        176.0109       7.91      16.19</span></span>
+<span><span class="co">#&gt; 98       Papilio zelicaon 1992 157        175.4993       7.91      16.19</span></span>
+<span><span class="co">#&gt; 104      Papilio zelicaon 1992 157        179.8842       7.91      16.19</span></span>
+<span><span class="co">#&gt; 110      Papilio zelicaon 1997 213        175.4789       6.27      15.48</span></span>
+<span><span class="co">#&gt; 111      Papilio zelicaon 1998 120        175.2688       7.79      16.72</span></span>
+<span><span class="co">#&gt; 112      Papilio zelicaon 1998 126        177.5573       7.79      16.72</span></span>
+<span><span class="co">#&gt; 113  Ochlodes sylvanoides 1998 126        179.2471       7.79      16.72</span></span>
+<span><span class="co">#&gt; 115  Ochlodes sylvanoides 1998 126        173.8348       7.79      16.72</span></span>
+<span><span class="co">#&gt; 117      Papilio zelicaon 1998 129        178.8538       7.79      16.72</span></span>
+<span><span class="co">#&gt; 118      Papilio zelicaon 1998 133        178.5211       7.79      16.72</span></span>
+<span><span class="co">#&gt; 121      Papilio zelicaon 1998 133        173.6886       7.79      16.72</span></span>
+<span><span class="co">#&gt; 124      Papilio zelicaon 1998 133        175.3961       7.79      16.72</span></span>
+<span><span class="co">#&gt; 127  Ochlodes sylvanoides 1998 160        173.3371       7.79      16.72</span></span>
+<span><span class="co">#&gt; 128  Ochlodes sylvanoides 1998 178        172.7198       7.79      16.72</span></span>
+<span><span class="co">#&gt; 129      Papilio zelicaon 1999 129        170.5577       5.81      14.86</span></span>
+<span><span class="co">#&gt; 130      Papilio zelicaon 1999 152        174.1180       5.81      14.86</span></span>
+<span><span class="co">#&gt; 131      Papilio zelicaon 2000 153        179.8139       6.46      14.92</span></span>
+<span><span class="co">#&gt; 133      Papilio zelicaon 2000 153        170.9819       6.46      14.92</span></span>
+<span><span class="co">#&gt; 135      Papilio zelicaon 2000 172        171.6164       6.46      14.92</span></span>
+<span><span class="co">#&gt; 137      Papilio zelicaon 2000 172        178.5208       6.46      14.92</span></span>
+<span><span class="co">#&gt; 139      Papilio zelicaon 2000 244        172.6040       6.46      14.92</span></span>
+<span><span class="co">#&gt; 140      Papilio zelicaon 2002 173        170.4917       4.21      15.56</span></span>
+<span><span class="co">#&gt; 141      Papilio zelicaon 2002 176        173.5074       4.21      15.56</span></span>
+<span><span class="co">#&gt; 142      Papilio zelicaon 2002 221        173.8775       4.21      15.56</span></span>
+<span><span class="co">#&gt; 145      Papilio zelicaon 2002 221        176.5509       4.21      15.56</span></span>
+<span><span class="co">#&gt; 148      Papilio zelicaon 2002 221        171.7563       4.21      15.56</span></span>
+<span><span class="co">#&gt; 151      Papilio zelicaon 2002 247        172.6570       4.21      15.56</span></span>
+<span><span class="co">#&gt; 152      Papilio zelicaon 2003 153        178.0665       6.03      16.21</span></span>
+<span><span class="co">#&gt; 153      Papilio zelicaon 2003 179        170.2400       6.03      16.21</span></span>
+<span><span class="co">#&gt; 154      Papilio zelicaon 2003 191        172.5467       6.03      16.21</span></span>
+<span><span class="co">#&gt; 156      Papilio zelicaon 2003 191        172.3552       6.03      16.21</span></span>
+<span><span class="co">#&gt; 158     Euchloe ausonides 2005 200        177.1767       8.03      15.43</span></span>
+<span><span class="co">#&gt; 159     Euchloe ausonides 2010 168        175.7018       6.87      15.61</span></span>
+<span><span class="co">#&gt; 161      Papilio zelicaon 2010 168        170.8675       6.87      15.61</span></span>
+<span><span class="co">#&gt; 172 Glaucopsyche lygdamus 2010 168        173.8194       6.87      15.61</span></span>
+<span><span class="co">#&gt; 173      Papilio zelicaon 2010 168        179.0063       6.87      15.61</span></span>
+<span><span class="co">#&gt; 184     Euchloe ausonides 2010 168        175.0159       6.87      15.61</span></span>
+<span><span class="co">#&gt; 186   Plebejus icarioides 2010 168        171.9591       6.87      15.61</span></span>
+<span><span class="co">#&gt; 187      Papilio zelicaon 2010 168        179.8193       6.87      15.61</span></span>
+<span><span class="co">#&gt; 198       Papilio rutulus 2010 168        176.5754       6.87      15.61</span></span>
+<span><span class="co">#&gt; 199      Papilio zelicaon 2010 168        174.9832       6.87      15.61</span></span>
+<span><span class="co">#&gt; 210      Papilio zelicaon 2010 168        177.9381       6.87      15.61</span></span>
+<span><span class="co">#&gt; 221      Papilio zelicaon 2010 168        174.5810       6.87      15.61</span></span>
+<span><span class="co">#&gt; 232      Papilio zelicaon 2010 168        176.1526       6.87      15.61</span></span>
+<span><span class="co">#&gt; 243      Papilio zelicaon 2010 168        176.6029       6.87      15.61</span></span>
+<span><span class="co">#&gt; 254      Papilio zelicaon 2010 168        179.9854       6.87      15.61</span></span>
+<span><span class="co">#&gt; 265      Papilio zelicaon 2010 168        173.8707       6.87      15.61</span></span>
+<span><span class="co">#&gt; 276      Papilio zelicaon 2010 168        170.5588       6.87      15.61</span></span>
+<span><span class="co">#&gt; 287      Papilio zelicaon 2011 181        173.9896       5.23      14.86</span></span>
+<span><span class="co">#&gt; 292      Papilio zelicaon 2011 181        177.4297       5.23      14.86</span></span>
+<span><span class="co">#&gt; 297       Papilio rutulus 2011 181        174.6005       5.23      14.86</span></span>
+<span><span class="co">#&gt; 298 Glaucopsyche lygdamus 2011 181        173.8703       5.23      14.86</span></span>
+<span><span class="co">#&gt; 299       Speyeria cybele 2011 181        175.6171       5.23      14.86</span></span>
+<span><span class="co">#&gt; 300      Papilio zelicaon 2011 181        179.0779       5.23      14.86</span></span>
+<span><span class="co">#&gt; 305      Papilio zelicaon 2011 181        178.6618       5.23      14.86</span></span>
+<span><span class="co">#&gt; 310    Coenonympha tullia 2011 181        171.3399       5.23      14.86</span></span>
+<span><span class="co">#&gt; 312    Coenonympha tullia 2011 181        170.3219       5.23      14.86</span></span>
+<span><span class="co">#&gt; 314      Papilio zelicaon 2011 181        176.2176       5.23      14.86</span></span>
+<span><span class="co">#&gt; 319    Polygonia gracilis 2011 226        175.0016       5.23      14.86</span></span>
+<span><span class="co">#&gt; 320   Plebejus icarioides 2012 170        171.3973       6.24      15.87</span></span>
+<span><span class="co">#&gt; 321    Coenonympha tullia 2012 170        170.1407       6.24      15.87</span></span>
+<span><span class="co">#&gt; 322      Papilio zelicaon 2012 171        170.6256       6.24      15.87</span></span>
+<span><span class="co">#&gt; 326      Papilio zelicaon 2012 171        170.2637       6.24      15.87</span></span>
+<span><span class="co">#&gt; 330      Papilio zelicaon 2012 171        175.8239       6.24      15.87</span></span>
+<span><span class="co">#&gt; 334      Speyeria hydaspe 2012 171        172.6939       6.24      15.87</span></span>
+<span><span class="co">#&gt; 335   Plebejus icarioides 2012 171        179.8840       6.24      15.87</span></span>
+<span><span class="co">#&gt; 336  Ochlodes sylvanoides 2012 171        172.2220       6.24      15.87</span></span>
+<span><span class="co">#&gt; 342  Ochlodes sylvanoides 2012 171        177.2253       6.24      15.87</span></span>
+<span><span class="co">#&gt; 348  Ochlodes sylvanoides 2012 171        171.9065       6.24      15.87</span></span>
+<span><span class="co">#&gt; 354       Speyeria cybele 2012 171        173.4970       6.24      15.87</span></span>
+<span><span class="co">#&gt; 356       Speyeria cybele 2012 171        173.5664       6.24      15.87</span></span>
+<span><span class="co">#&gt; 358    Polygonia gracilis 2012 171        179.8812       6.24      15.87</span></span>
+<span><span class="co">#&gt; 359  Ochlodes sylvanoides 2012 171        174.7977       6.24      15.87</span></span>
+<span><span class="co">#&gt; 365      Papilio zelicaon 2012 171        179.2674       6.24      15.87</span></span>
+<span><span class="co">#&gt; 369  Ochlodes sylvanoides 2012 171        171.6059       6.24      15.87</span></span>
+<span><span class="co">#&gt; 375       Strymon melinus 2012 171        176.1139       6.24      15.87</span></span>
+<span><span class="co">#&gt; 376  Ochlodes sylvanoides 2012 171        175.7897       6.24      15.87</span></span>
+<span><span class="co">#&gt; 382       Papilio rutulus 2013 132        179.5773       6.52      17.00</span></span>
+<span><span class="co">#&gt; 383  Ochlodes sylvanoides 2013 195        171.2476       6.52      17.00</span></span>
+<span><span class="co">#&gt; 384  Ochlodes sylvanoides 2013 221        173.4100       6.52      17.00</span></span>
+<span><span class="co">#&gt;        Site</span></span>
+<span><span class="co">#&gt; 1   Utrecht</span></span>
+<span><span class="co">#&gt; 2   Utrecht</span></span>
+<span><span class="co">#&gt; 3   Utrecht</span></span>
+<span><span class="co">#&gt; 4   Utrecht</span></span>
+<span><span class="co">#&gt; 5   Utrecht</span></span>
+<span><span class="co">#&gt; 6   Utrecht</span></span>
+<span><span class="co">#&gt; 7   Utrecht</span></span>
+<span><span class="co">#&gt; 8   Utrecht</span></span>
+<span><span class="co">#&gt; 9   Utrecht</span></span>
+<span><span class="co">#&gt; 10  Utrecht</span></span>
+<span><span class="co">#&gt; 11  Utrecht</span></span>
+<span><span class="co">#&gt; 12  Utrecht</span></span>
+<span><span class="co">#&gt; 13  Utrecht</span></span>
+<span><span class="co">#&gt; 14  Utrecht</span></span>
+<span><span class="co">#&gt; 15  Utrecht</span></span>
+<span><span class="co">#&gt; 18  Utrecht</span></span>
+<span><span class="co">#&gt; 21  Utrecht</span></span>
+<span><span class="co">#&gt; 24  Utrecht</span></span>
+<span><span class="co">#&gt; 25  Utrecht</span></span>
+<span><span class="co">#&gt; 26  Utrecht</span></span>
+<span><span class="co">#&gt; 27  Utrecht</span></span>
+<span><span class="co">#&gt; 28  Utrecht</span></span>
+<span><span class="co">#&gt; 30  Utrecht</span></span>
+<span><span class="co">#&gt; 32  Utrecht</span></span>
+<span><span class="co">#&gt; 33  Utrecht</span></span>
+<span><span class="co">#&gt; 34  Utrecht</span></span>
+<span><span class="co">#&gt; 35  Utrecht</span></span>
+<span><span class="co">#&gt; 36  Utrecht</span></span>
+<span><span class="co">#&gt; 37  Utrecht</span></span>
+<span><span class="co">#&gt; 38  Utrecht</span></span>
+<span><span class="co">#&gt; 39  Utrecht</span></span>
+<span><span class="co">#&gt; 40  Utrecht</span></span>
+<span><span class="co">#&gt; 41  Utrecht</span></span>
+<span><span class="co">#&gt; 42  Utrecht</span></span>
+<span><span class="co">#&gt; 43  Utrecht</span></span>
+<span><span class="co">#&gt; 44  Utrecht</span></span>
+<span><span class="co">#&gt; 45  Utrecht</span></span>
+<span><span class="co">#&gt; 46  Utrecht</span></span>
+<span><span class="co">#&gt; 47  Utrecht</span></span>
+<span><span class="co">#&gt; 48  Utrecht</span></span>
+<span><span class="co">#&gt; 49  Utrecht</span></span>
+<span><span class="co">#&gt; 50  Utrecht</span></span>
+<span><span class="co">#&gt; 51  Utrecht</span></span>
+<span><span class="co">#&gt; 52  Utrecht</span></span>
+<span><span class="co">#&gt; 53  Utrecht</span></span>
+<span><span class="co">#&gt; 54  Utrecht</span></span>
+<span><span class="co">#&gt; 55  Utrecht</span></span>
+<span><span class="co">#&gt; 56  Utrecht</span></span>
+<span><span class="co">#&gt; 57  Utrecht</span></span>
+<span><span class="co">#&gt; 58  Utrecht</span></span>
+<span><span class="co">#&gt; 59  Utrecht</span></span>
+<span><span class="co">#&gt; 60  Utrecht</span></span>
+<span><span class="co">#&gt; 61  Utrecht</span></span>
+<span><span class="co">#&gt; 62  Utrecht</span></span>
+<span><span class="co">#&gt; 63  Utrecht</span></span>
+<span><span class="co">#&gt; 64  Utrecht</span></span>
+<span><span class="co">#&gt; 65  Utrecht</span></span>
+<span><span class="co">#&gt; 66  Utrecht</span></span>
+<span><span class="co">#&gt; 68  Utrecht</span></span>
+<span><span class="co">#&gt; 70  Utrecht</span></span>
+<span><span class="co">#&gt; 72  Utrecht</span></span>
+<span><span class="co">#&gt; 74  Utrecht</span></span>
+<span><span class="co">#&gt; 80  Utrecht</span></span>
+<span><span class="co">#&gt; 86  Utrecht</span></span>
+<span><span class="co">#&gt; 92  Utrecht</span></span>
+<span><span class="co">#&gt; 98  Utrecht</span></span>
+<span><span class="co">#&gt; 104 Utrecht</span></span>
+<span><span class="co">#&gt; 110 Utrecht</span></span>
+<span><span class="co">#&gt; 111 Utrecht</span></span>
+<span><span class="co">#&gt; 112 Utrecht</span></span>
+<span><span class="co">#&gt; 113 Utrecht</span></span>
+<span><span class="co">#&gt; 115 Utrecht</span></span>
+<span><span class="co">#&gt; 117 Utrecht</span></span>
+<span><span class="co">#&gt; 118 Utrecht</span></span>
+<span><span class="co">#&gt; 121 Utrecht</span></span>
+<span><span class="co">#&gt; 124 Utrecht</span></span>
+<span><span class="co">#&gt; 127 Utrecht</span></span>
+<span><span class="co">#&gt; 128 Utrecht</span></span>
+<span><span class="co">#&gt; 129 Utrecht</span></span>
+<span><span class="co">#&gt; 130 Utrecht</span></span>
+<span><span class="co">#&gt; 131 Utrecht</span></span>
+<span><span class="co">#&gt; 133 Utrecht</span></span>
+<span><span class="co">#&gt; 135 Utrecht</span></span>
+<span><span class="co">#&gt; 137 Utrecht</span></span>
+<span><span class="co">#&gt; 139 Utrecht</span></span>
+<span><span class="co">#&gt; 140 Utrecht</span></span>
+<span><span class="co">#&gt; 141 Utrecht</span></span>
+<span><span class="co">#&gt; 142 Utrecht</span></span>
+<span><span class="co">#&gt; 145 Utrecht</span></span>
+<span><span class="co">#&gt; 148 Utrecht</span></span>
+<span><span class="co">#&gt; 151 Utrecht</span></span>
+<span><span class="co">#&gt; 152 Utrecht</span></span>
+<span><span class="co">#&gt; 153 Utrecht</span></span>
+<span><span class="co">#&gt; 154 Utrecht</span></span>
+<span><span class="co">#&gt; 156 Utrecht</span></span>
+<span><span class="co">#&gt; 158 Utrecht</span></span>
+<span><span class="co">#&gt; 159 Utrecht</span></span>
+<span><span class="co">#&gt; 161 Utrecht</span></span>
+<span><span class="co">#&gt; 172 Utrecht</span></span>
+<span><span class="co">#&gt; 173 Utrecht</span></span>
+<span><span class="co">#&gt; 184 Utrecht</span></span>
+<span><span class="co">#&gt; 186 Utrecht</span></span>
+<span><span class="co">#&gt; 187 Utrecht</span></span>
+<span><span class="co">#&gt; 198 Utrecht</span></span>
+<span><span class="co">#&gt; 199 Utrecht</span></span>
+<span><span class="co">#&gt; 210 Utrecht</span></span>
+<span><span class="co">#&gt; 221 Utrecht</span></span>
+<span><span class="co">#&gt; 232 Utrecht</span></span>
+<span><span class="co">#&gt; 243 Utrecht</span></span>
+<span><span class="co">#&gt; 254 Utrecht</span></span>
+<span><span class="co">#&gt; 265 Utrecht</span></span>
+<span><span class="co">#&gt; 276 Utrecht</span></span>
+<span><span class="co">#&gt; 287 Utrecht</span></span>
+<span><span class="co">#&gt; 292 Utrecht</span></span>
+<span><span class="co">#&gt; 297 Utrecht</span></span>
+<span><span class="co">#&gt; 298 Utrecht</span></span>
+<span><span class="co">#&gt; 299 Utrecht</span></span>
+<span><span class="co">#&gt; 300 Utrecht</span></span>
+<span><span class="co">#&gt; 305 Utrecht</span></span>
+<span><span class="co">#&gt; 310 Utrecht</span></span>
+<span><span class="co">#&gt; 312 Utrecht</span></span>
+<span><span class="co">#&gt; 314 Utrecht</span></span>
+<span><span class="co">#&gt; 319 Utrecht</span></span>
+<span><span class="co">#&gt; 320 Utrecht</span></span>
+<span><span class="co">#&gt; 321 Utrecht</span></span>
+<span><span class="co">#&gt; 322 Utrecht</span></span>
+<span><span class="co">#&gt; 326 Utrecht</span></span>
+<span><span class="co">#&gt; 330 Utrecht</span></span>
+<span><span class="co">#&gt; 334 Utrecht</span></span>
+<span><span class="co">#&gt; 335 Utrecht</span></span>
+<span><span class="co">#&gt; 336 Utrecht</span></span>
+<span><span class="co">#&gt; 342 Utrecht</span></span>
+<span><span class="co">#&gt; 348 Utrecht</span></span>
+<span><span class="co">#&gt; 354 Utrecht</span></span>
+<span><span class="co">#&gt; 356 Utrecht</span></span>
+<span><span class="co">#&gt; 358 Utrecht</span></span>
+<span><span class="co">#&gt; 359 Utrecht</span></span>
+<span><span class="co">#&gt; 365 Utrecht</span></span>
+<span><span class="co">#&gt; 369 Utrecht</span></span>
+<span><span class="co">#&gt; 375 Utrecht</span></span>
+<span><span class="co">#&gt; 376 Utrecht</span></span>
+<span><span class="co">#&gt; 382 Utrecht</span></span>
+<span><span class="co">#&gt; 383 Utrecht</span></span>
+<span><span class="co">#&gt; 384 Utrecht</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="using-function-two-and-getting-data-less-than-5">Using function Two and getting data less than 5<a class="anchor" aria-label="anchor" href="#using-function-two-and-getting-data-less-than-5"></a>
+</h2>
+<ul>
+<li><p>This function takes two arguments and has no practical reason
+except that I wanted to make it. Give the file path used for the clean
+function, and a column in the data set. This function takes that column
+and divides it by two, filters that values less than 5 and returns the
+output of the new column.</p></li>
+<li><p>Example</p></li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
+<span><span class="fu">quantum</span><span class="fu">::</span><span class="fu"><a href="../reference/bubble.html">bubble</a></span><span class="op">(</span><span class="va">file</span>, <span class="st">"Cumulative_Rain"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] ButterflySpecies Year             Day              Cumulative_Rain </span></span>
+<span><span class="co">#&gt; [5] SpringTemp       SummerTemp       Site             new_cal         </span></span>
+<span><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span>
+<span><span class="co">#&gt;          ButterflySpecies Year Day Cumulative_Rain SpringTemp SummerTemp</span></span>
+<span><span class="co">#&gt; 1   Glaucopsyche lygdamus 1931 133        178.4484       6.85      15.35</span></span>
+<span><span class="co">#&gt; 2         Cupido amyntula 1931 143        173.2576       6.85      15.35</span></span>
+<span><span class="co">#&gt; 3         Cupido amyntula 1931 158        174.7535       6.85      15.35</span></span>
+<span><span class="co">#&gt; 4   Glaucopsyche lygdamus 1931 212        172.2788       6.85      15.35</span></span>
+<span><span class="co">#&gt; 5         Cupido amyntula 1933 142        177.4902       5.40      14.92</span></span>
+<span><span class="co">#&gt; 6   Glaucopsyche lygdamus 1933 154        178.7462       5.40      14.92</span></span>
+<span><span class="co">#&gt; 7   Glaucopsyche lygdamus 1933 156        178.8711       5.40      14.92</span></span>
+<span><span class="co">#&gt; 8      Coenonympha tullia 1933 168        172.3766       5.40      14.92</span></span>
+<span><span class="co">#&gt; 9      Coenonympha tullia 1937 186        179.9240       6.40      15.22</span></span>
+<span><span class="co">#&gt; 10  Glaucopsyche lygdamus 1938 138        170.7959       6.78      15.77</span></span>
+<span><span class="co">#&gt; 11  Glaucopsyche lygdamus 1938 141        175.4622       6.78      15.77</span></span>
+<span><span class="co">#&gt; 12        Cupido amyntula 1938 141        171.4745       6.78      15.77</span></span>
+<span><span class="co">#&gt; 13        Cupido amyntula 1938 143        177.6364       6.78      15.77</span></span>
+<span><span class="co">#&gt; 14     Polygonia gracilis 1938 144        178.0166       6.78      15.77</span></span>
+<span><span class="co">#&gt; 15     Coenonympha tullia 1938 146        179.3500       6.78      15.77</span></span>
+<span><span class="co">#&gt; 18     Coenonympha tullia 1938 146        179.0895       6.78      15.77</span></span>
+<span><span class="co">#&gt; 21     Coenonympha tullia 1938 146        178.7927       6.78      15.77</span></span>
+<span><span class="co">#&gt; 24      Euchloe ausonides 1938 147        179.1857       6.78      15.77</span></span>
+<span><span class="co">#&gt; 25        Cupido amyntula 1938 148        171.5554       6.78      15.77</span></span>
+<span><span class="co">#&gt; 26      Euchloe ausonides 1938 148        177.7596       6.78      15.77</span></span>
+<span><span class="co">#&gt; 27      Euchloe ausonides 1940 127        175.8669       7.70      15.75</span></span>
+<span><span class="co">#&gt; 28    Plebejus icarioides 1940 141        171.3464       7.70      15.75</span></span>
+<span><span class="co">#&gt; 30    Plebejus icarioides 1940 141        173.0046       7.70      15.75</span></span>
+<span><span class="co">#&gt; 32     Coenonympha tullia 1940 186        174.7190       7.70      15.75</span></span>
+<span><span class="co">#&gt; 33    Plebejus icarioides 1941 231        170.4459       8.05      16.39</span></span>
+<span><span class="co">#&gt; 34       Papilio zelicaon 1949 190        174.3116       6.69      14.47</span></span>
+<span><span class="co">#&gt; 35     Coenonympha tullia 1950 155        177.0788       4.68      15.77</span></span>
+<span><span class="co">#&gt; 36    Plebejus icarioides 1950 179        177.1962       4.68      15.77</span></span>
+<span><span class="co">#&gt; 37    Plebejus icarioides 1950 238        179.8041       4.68      15.77</span></span>
+<span><span class="co">#&gt; 38      Euchloe ausonides 1951 160        170.3726       4.89      15.55</span></span>
+<span><span class="co">#&gt; 39    Plebejus icarioides 1951 168        179.1927       4.89      15.55</span></span>
+<span><span class="co">#&gt; 40      Euchloe ausonides 1951 170        174.0501       4.89      15.55</span></span>
+<span><span class="co">#&gt; 41    Plebejus icarioides 1951 171        173.1867       4.89      15.55</span></span>
+<span><span class="co">#&gt; 42    Plebejus icarioides 1951 172        170.0544       4.89      15.55</span></span>
+<span><span class="co">#&gt; 43    Plebejus icarioides 1951 174        178.7485       4.89      15.55</span></span>
+<span><span class="co">#&gt; 44        Strymon melinus 1951 207        175.3668       4.89      15.55</span></span>
+<span><span class="co">#&gt; 45    Plebejus icarioides 1952 195        175.0056       5.67      14.90</span></span>
+<span><span class="co">#&gt; 46    Plebejus icarioides 1952 206        172.7213       5.67      14.90</span></span>
+<span><span class="co">#&gt; 47     Coenonympha tullia 1952 209        174.6930       5.67      14.90</span></span>
+<span><span class="co">#&gt; 48    Plebejus icarioides 1952 224        174.8580       5.67      14.90</span></span>
+<span><span class="co">#&gt; 49       Papilio zelicaon 1953 161        174.3292       6.20      14.75</span></span>
+<span><span class="co">#&gt; 50    Plebejus icarioides 1953 173        174.4071       6.20      14.75</span></span>
+<span><span class="co">#&gt; 51     Coenonympha tullia 1953 191        170.0336       6.20      14.75</span></span>
+<span><span class="co">#&gt; 52     Coenonympha tullia 1956 123        178.3952       5.81      14.89</span></span>
+<span><span class="co">#&gt; 53     Coenonympha tullia 1956 128        173.7995       5.81      14.89</span></span>
+<span><span class="co">#&gt; 54     Coenonympha tullia 1956 130        170.5513       5.81      14.89</span></span>
+<span><span class="co">#&gt; 55     Coenonympha tullia 1956 132        178.0478       5.81      14.89</span></span>
+<span><span class="co">#&gt; 56     Coenonympha tullia 1956 134        176.3015       5.81      14.89</span></span>
+<span><span class="co">#&gt; 57    Plebejus icarioides 1962 210        179.9303       5.18      14.39</span></span>
+<span><span class="co">#&gt; 58       Papilio zelicaon 1962 232        179.8847       5.18      14.39</span></span>
+<span><span class="co">#&gt; 59        Cupido amyntula 1966 129        170.8816       5.95      14.66</span></span>
+<span><span class="co">#&gt; 60       Papilio zelicaon 1966 129        173.0823       5.95      14.66</span></span>
+<span><span class="co">#&gt; 61    Plebejus icarioides 1968 218        170.5478       6.25      14.85</span></span>
+<span><span class="co">#&gt; 62       Papilio zelicaon 1971 238        171.8423       5.36      15.37</span></span>
+<span><span class="co">#&gt; 63       Papilio zelicaon 1973 183        179.4704       6.58      14.43</span></span>
+<span><span class="co">#&gt; 64       Papilio zelicaon 1980 201        170.1857       6.93      14.53</span></span>
+<span><span class="co">#&gt; 65       Papilio zelicaon 1989 142        176.7787       6.20      15.74</span></span>
+<span><span class="co">#&gt; 66       Papilio zelicaon 1989 169        172.5609       6.20      15.74</span></span>
+<span><span class="co">#&gt; 68       Papilio zelicaon 1989 169        178.1223       6.20      15.74</span></span>
+<span><span class="co">#&gt; 70       Papilio zelicaon 1989 171        170.4636       6.20      15.74</span></span>
+<span><span class="co">#&gt; 72       Papilio zelicaon 1989 171        172.7956       6.20      15.74</span></span>
+<span><span class="co">#&gt; 74       Papilio zelicaon 1992 157        172.9061       7.91      16.19</span></span>
+<span><span class="co">#&gt; 80       Papilio zelicaon 1992 157        174.4707       7.91      16.19</span></span>
+<span><span class="co">#&gt; 86       Papilio zelicaon 1992 157        172.3244       7.91      16.19</span></span>
+<span><span class="co">#&gt; 92       Papilio zelicaon 1992 157        176.0109       7.91      16.19</span></span>
+<span><span class="co">#&gt; 98       Papilio zelicaon 1992 157        175.4993       7.91      16.19</span></span>
+<span><span class="co">#&gt; 104      Papilio zelicaon 1992 157        179.8842       7.91      16.19</span></span>
+<span><span class="co">#&gt; 110      Papilio zelicaon 1997 213        175.4789       6.27      15.48</span></span>
+<span><span class="co">#&gt; 111      Papilio zelicaon 1998 120        175.2688       7.79      16.72</span></span>
+<span><span class="co">#&gt; 112      Papilio zelicaon 1998 126        177.5573       7.79      16.72</span></span>
+<span><span class="co">#&gt; 113  Ochlodes sylvanoides 1998 126        179.2471       7.79      16.72</span></span>
+<span><span class="co">#&gt; 115  Ochlodes sylvanoides 1998 126        173.8348       7.79      16.72</span></span>
+<span><span class="co">#&gt; 117      Papilio zelicaon 1998 129        178.8538       7.79      16.72</span></span>
+<span><span class="co">#&gt; 118      Papilio zelicaon 1998 133        178.5211       7.79      16.72</span></span>
+<span><span class="co">#&gt; 121      Papilio zelicaon 1998 133        173.6886       7.79      16.72</span></span>
+<span><span class="co">#&gt; 124      Papilio zelicaon 1998 133        175.3961       7.79      16.72</span></span>
+<span><span class="co">#&gt; 127  Ochlodes sylvanoides 1998 160        173.3371       7.79      16.72</span></span>
+<span><span class="co">#&gt; 128  Ochlodes sylvanoides 1998 178        172.7198       7.79      16.72</span></span>
+<span><span class="co">#&gt; 129      Papilio zelicaon 1999 129        170.5577       5.81      14.86</span></span>
+<span><span class="co">#&gt; 130      Papilio zelicaon 1999 152        174.1180       5.81      14.86</span></span>
+<span><span class="co">#&gt; 131      Papilio zelicaon 2000 153        179.8139       6.46      14.92</span></span>
+<span><span class="co">#&gt; 133      Papilio zelicaon 2000 153        170.9819       6.46      14.92</span></span>
+<span><span class="co">#&gt; 135      Papilio zelicaon 2000 172        171.6164       6.46      14.92</span></span>
+<span><span class="co">#&gt; 137      Papilio zelicaon 2000 172        178.5208       6.46      14.92</span></span>
+<span><span class="co">#&gt; 139      Papilio zelicaon 2000 244        172.6040       6.46      14.92</span></span>
+<span><span class="co">#&gt; 140      Papilio zelicaon 2002 173        170.4917       4.21      15.56</span></span>
+<span><span class="co">#&gt; 141      Papilio zelicaon 2002 176        173.5074       4.21      15.56</span></span>
+<span><span class="co">#&gt; 142      Papilio zelicaon 2002 221        173.8775       4.21      15.56</span></span>
+<span><span class="co">#&gt; 145      Papilio zelicaon 2002 221        176.5509       4.21      15.56</span></span>
+<span><span class="co">#&gt; 148      Papilio zelicaon 2002 221        171.7563       4.21      15.56</span></span>
+<span><span class="co">#&gt; 151      Papilio zelicaon 2002 247        172.6570       4.21      15.56</span></span>
+<span><span class="co">#&gt; 152      Papilio zelicaon 2003 153        178.0665       6.03      16.21</span></span>
+<span><span class="co">#&gt; 153      Papilio zelicaon 2003 179        170.2400       6.03      16.21</span></span>
+<span><span class="co">#&gt; 154      Papilio zelicaon 2003 191        172.5467       6.03      16.21</span></span>
+<span><span class="co">#&gt; 156      Papilio zelicaon 2003 191        172.3552       6.03      16.21</span></span>
+<span><span class="co">#&gt; 158     Euchloe ausonides 2005 200        177.1767       8.03      15.43</span></span>
+<span><span class="co">#&gt; 159     Euchloe ausonides 2010 168        175.7018       6.87      15.61</span></span>
+<span><span class="co">#&gt; 161      Papilio zelicaon 2010 168        170.8675       6.87      15.61</span></span>
+<span><span class="co">#&gt; 172 Glaucopsyche lygdamus 2010 168        173.8194       6.87      15.61</span></span>
+<span><span class="co">#&gt; 173      Papilio zelicaon 2010 168        179.0063       6.87      15.61</span></span>
+<span><span class="co">#&gt; 184     Euchloe ausonides 2010 168        175.0159       6.87      15.61</span></span>
+<span><span class="co">#&gt; 186   Plebejus icarioides 2010 168        171.9591       6.87      15.61</span></span>
+<span><span class="co">#&gt; 187      Papilio zelicaon 2010 168        179.8193       6.87      15.61</span></span>
+<span><span class="co">#&gt; 198       Papilio rutulus 2010 168        176.5754       6.87      15.61</span></span>
+<span><span class="co">#&gt; 199      Papilio zelicaon 2010 168        174.9832       6.87      15.61</span></span>
+<span><span class="co">#&gt; 210      Papilio zelicaon 2010 168        177.9381       6.87      15.61</span></span>
+<span><span class="co">#&gt; 221      Papilio zelicaon 2010 168        174.5810       6.87      15.61</span></span>
+<span><span class="co">#&gt; 232      Papilio zelicaon 2010 168        176.1526       6.87      15.61</span></span>
+<span><span class="co">#&gt; 243      Papilio zelicaon 2010 168        176.6029       6.87      15.61</span></span>
+<span><span class="co">#&gt; 254      Papilio zelicaon 2010 168        179.9854       6.87      15.61</span></span>
+<span><span class="co">#&gt; 265      Papilio zelicaon 2010 168        173.8707       6.87      15.61</span></span>
+<span><span class="co">#&gt; 276      Papilio zelicaon 2010 168        170.5588       6.87      15.61</span></span>
+<span><span class="co">#&gt; 287      Papilio zelicaon 2011 181        173.9896       5.23      14.86</span></span>
+<span><span class="co">#&gt; 292      Papilio zelicaon 2011 181        177.4297       5.23      14.86</span></span>
+<span><span class="co">#&gt; 297       Papilio rutulus 2011 181        174.6005       5.23      14.86</span></span>
+<span><span class="co">#&gt; 298 Glaucopsyche lygdamus 2011 181        173.8703       5.23      14.86</span></span>
+<span><span class="co">#&gt; 299       Speyeria cybele 2011 181        175.6171       5.23      14.86</span></span>
+<span><span class="co">#&gt; 300      Papilio zelicaon 2011 181        179.0779       5.23      14.86</span></span>
+<span><span class="co">#&gt; 305      Papilio zelicaon 2011 181        178.6618       5.23      14.86</span></span>
+<span><span class="co">#&gt; 310    Coenonympha tullia 2011 181        171.3399       5.23      14.86</span></span>
+<span><span class="co">#&gt; 312    Coenonympha tullia 2011 181        170.3219       5.23      14.86</span></span>
+<span><span class="co">#&gt; 314      Papilio zelicaon 2011 181        176.2176       5.23      14.86</span></span>
+<span><span class="co">#&gt; 319    Polygonia gracilis 2011 226        175.0016       5.23      14.86</span></span>
+<span><span class="co">#&gt; 320   Plebejus icarioides 2012 170        171.3973       6.24      15.87</span></span>
+<span><span class="co">#&gt; 321    Coenonympha tullia 2012 170        170.1407       6.24      15.87</span></span>
+<span><span class="co">#&gt; 322      Papilio zelicaon 2012 171        170.6256       6.24      15.87</span></span>
+<span><span class="co">#&gt; 326      Papilio zelicaon 2012 171        170.2637       6.24      15.87</span></span>
+<span><span class="co">#&gt; 330      Papilio zelicaon 2012 171        175.8239       6.24      15.87</span></span>
+<span><span class="co">#&gt; 334      Speyeria hydaspe 2012 171        172.6939       6.24      15.87</span></span>
+<span><span class="co">#&gt; 335   Plebejus icarioides 2012 171        179.8840       6.24      15.87</span></span>
+<span><span class="co">#&gt; 336  Ochlodes sylvanoides 2012 171        172.2220       6.24      15.87</span></span>
+<span><span class="co">#&gt; 342  Ochlodes sylvanoides 2012 171        177.2253       6.24      15.87</span></span>
+<span><span class="co">#&gt; 348  Ochlodes sylvanoides 2012 171        171.9065       6.24      15.87</span></span>
+<span><span class="co">#&gt; 354       Speyeria cybele 2012 171        173.4970       6.24      15.87</span></span>
+<span><span class="co">#&gt; 356       Speyeria cybele 2012 171        173.5664       6.24      15.87</span></span>
+<span><span class="co">#&gt; 358    Polygonia gracilis 2012 171        179.8812       6.24      15.87</span></span>
+<span><span class="co">#&gt; 359  Ochlodes sylvanoides 2012 171        174.7977       6.24      15.87</span></span>
+<span><span class="co">#&gt; 365      Papilio zelicaon 2012 171        179.2674       6.24      15.87</span></span>
+<span><span class="co">#&gt; 369  Ochlodes sylvanoides 2012 171        171.6059       6.24      15.87</span></span>
+<span><span class="co">#&gt; 375       Strymon melinus 2012 171        176.1139       6.24      15.87</span></span>
+<span><span class="co">#&gt; 376  Ochlodes sylvanoides 2012 171        175.7897       6.24      15.87</span></span>
+<span><span class="co">#&gt; 382       Papilio rutulus 2013 132        179.5773       6.52      17.00</span></span>
+<span><span class="co">#&gt; 383  Ochlodes sylvanoides 2013 195        171.2476       6.52      17.00</span></span>
+<span><span class="co">#&gt; 384  Ochlodes sylvanoides 2013 221        173.4100       6.52      17.00</span></span>
+<span><span class="co">#&gt;        Site  new_cal</span></span>
+<span><span class="co">#&gt; 1   Utrecht 89.22419</span></span>
+<span><span class="co">#&gt; 2   Utrecht 86.62880</span></span>
+<span><span class="co">#&gt; 3   Utrecht 87.37673</span></span>
+<span><span class="co">#&gt; 4   Utrecht 86.13940</span></span>
+<span><span class="co">#&gt; 5   Utrecht 88.74511</span></span>
+<span><span class="co">#&gt; 6   Utrecht 89.37310</span></span>
+<span><span class="co">#&gt; 7   Utrecht 89.43553</span></span>
+<span><span class="co">#&gt; 8   Utrecht 86.18831</span></span>
+<span><span class="co">#&gt; 9   Utrecht 89.96201</span></span>
+<span><span class="co">#&gt; 10  Utrecht 85.39794</span></span>
+<span><span class="co">#&gt; 11  Utrecht 87.73111</span></span>
+<span><span class="co">#&gt; 12  Utrecht 85.73726</span></span>
+<span><span class="co">#&gt; 13  Utrecht 88.81821</span></span>
+<span><span class="co">#&gt; 14  Utrecht 89.00830</span></span>
+<span><span class="co">#&gt; 15  Utrecht 89.67502</span></span>
+<span><span class="co">#&gt; 18  Utrecht 89.54473</span></span>
+<span><span class="co">#&gt; 21  Utrecht 89.39637</span></span>
+<span><span class="co">#&gt; 24  Utrecht 89.59287</span></span>
+<span><span class="co">#&gt; 25  Utrecht 85.77771</span></span>
+<span><span class="co">#&gt; 26  Utrecht 88.87982</span></span>
+<span><span class="co">#&gt; 27  Utrecht 87.93347</span></span>
+<span><span class="co">#&gt; 28  Utrecht 85.67321</span></span>
+<span><span class="co">#&gt; 30  Utrecht 86.50231</span></span>
+<span><span class="co">#&gt; 32  Utrecht 87.35951</span></span>
+<span><span class="co">#&gt; 33  Utrecht 85.22296</span></span>
+<span><span class="co">#&gt; 34  Utrecht 87.15579</span></span>
+<span><span class="co">#&gt; 35  Utrecht 88.53940</span></span>
+<span><span class="co">#&gt; 36  Utrecht 88.59812</span></span>
+<span><span class="co">#&gt; 37  Utrecht 89.90205</span></span>
+<span><span class="co">#&gt; 38  Utrecht 85.18632</span></span>
+<span><span class="co">#&gt; 39  Utrecht 89.59637</span></span>
+<span><span class="co">#&gt; 40  Utrecht 87.02503</span></span>
+<span><span class="co">#&gt; 41  Utrecht 86.59337</span></span>
+<span><span class="co">#&gt; 42  Utrecht 85.02719</span></span>
+<span><span class="co">#&gt; 43  Utrecht 89.37424</span></span>
+<span><span class="co">#&gt; 44  Utrecht 87.68338</span></span>
+<span><span class="co">#&gt; 45  Utrecht 87.50278</span></span>
+<span><span class="co">#&gt; 46  Utrecht 86.36067</span></span>
+<span><span class="co">#&gt; 47  Utrecht 87.34648</span></span>
+<span><span class="co">#&gt; 48  Utrecht 87.42902</span></span>
+<span><span class="co">#&gt; 49  Utrecht 87.16461</span></span>
+<span><span class="co">#&gt; 50  Utrecht 87.20354</span></span>
+<span><span class="co">#&gt; 51  Utrecht 85.01681</span></span>
+<span><span class="co">#&gt; 52  Utrecht 89.19762</span></span>
+<span><span class="co">#&gt; 53  Utrecht 86.89974</span></span>
+<span><span class="co">#&gt; 54  Utrecht 85.27563</span></span>
+<span><span class="co">#&gt; 55  Utrecht 89.02389</span></span>
+<span><span class="co">#&gt; 56  Utrecht 88.15076</span></span>
+<span><span class="co">#&gt; 57  Utrecht 89.96514</span></span>
+<span><span class="co">#&gt; 58  Utrecht 89.94234</span></span>
+<span><span class="co">#&gt; 59  Utrecht 85.44079</span></span>
+<span><span class="co">#&gt; 60  Utrecht 86.54113</span></span>
+<span><span class="co">#&gt; 61  Utrecht 85.27389</span></span>
+<span><span class="co">#&gt; 62  Utrecht 85.92115</span></span>
+<span><span class="co">#&gt; 63  Utrecht 89.73518</span></span>
+<span><span class="co">#&gt; 64  Utrecht 85.09285</span></span>
+<span><span class="co">#&gt; 65  Utrecht 88.38936</span></span>
+<span><span class="co">#&gt; 66  Utrecht 86.28043</span></span>
+<span><span class="co">#&gt; 68  Utrecht 89.06114</span></span>
+<span><span class="co">#&gt; 70  Utrecht 85.23182</span></span>
+<span><span class="co">#&gt; 72  Utrecht 86.39781</span></span>
+<span><span class="co">#&gt; 74  Utrecht 86.45307</span></span>
+<span><span class="co">#&gt; 80  Utrecht 87.23537</span></span>
+<span><span class="co">#&gt; 86  Utrecht 86.16218</span></span>
+<span><span class="co">#&gt; 92  Utrecht 88.00543</span></span>
+<span><span class="co">#&gt; 98  Utrecht 87.74964</span></span>
+<span><span class="co">#&gt; 104 Utrecht 89.94210</span></span>
+<span><span class="co">#&gt; 110 Utrecht 87.73946</span></span>
+<span><span class="co">#&gt; 111 Utrecht 87.63438</span></span>
+<span><span class="co">#&gt; 112 Utrecht 88.77863</span></span>
+<span><span class="co">#&gt; 113 Utrecht 89.62355</span></span>
+<span><span class="co">#&gt; 115 Utrecht 86.91738</span></span>
+<span><span class="co">#&gt; 117 Utrecht 89.42689</span></span>
+<span><span class="co">#&gt; 118 Utrecht 89.26053</span></span>
+<span><span class="co">#&gt; 121 Utrecht 86.84431</span></span>
+<span><span class="co">#&gt; 124 Utrecht 87.69807</span></span>
+<span><span class="co">#&gt; 127 Utrecht 86.66856</span></span>
+<span><span class="co">#&gt; 128 Utrecht 86.35988</span></span>
+<span><span class="co">#&gt; 129 Utrecht 85.27885</span></span>
+<span><span class="co">#&gt; 130 Utrecht 87.05902</span></span>
+<span><span class="co">#&gt; 131 Utrecht 89.90694</span></span>
+<span><span class="co">#&gt; 133 Utrecht 85.49093</span></span>
+<span><span class="co">#&gt; 135 Utrecht 85.80819</span></span>
+<span><span class="co">#&gt; 137 Utrecht 89.26040</span></span>
+<span><span class="co">#&gt; 139 Utrecht 86.30199</span></span>
+<span><span class="co">#&gt; 140 Utrecht 85.24585</span></span>
+<span><span class="co">#&gt; 141 Utrecht 86.75370</span></span>
+<span><span class="co">#&gt; 142 Utrecht 86.93873</span></span>
+<span><span class="co">#&gt; 145 Utrecht 88.27544</span></span>
+<span><span class="co">#&gt; 148 Utrecht 85.87815</span></span>
+<span><span class="co">#&gt; 151 Utrecht 86.32850</span></span>
+<span><span class="co">#&gt; 152 Utrecht 89.03325</span></span>
+<span><span class="co">#&gt; 153 Utrecht 85.12002</span></span>
+<span><span class="co">#&gt; 154 Utrecht 86.27337</span></span>
+<span><span class="co">#&gt; 156 Utrecht 86.17761</span></span>
+<span><span class="co">#&gt; 158 Utrecht 88.58837</span></span>
+<span><span class="co">#&gt; 159 Utrecht 87.85089</span></span>
+<span><span class="co">#&gt; 161 Utrecht 85.43377</span></span>
+<span><span class="co">#&gt; 172 Utrecht 86.90971</span></span>
+<span><span class="co">#&gt; 173 Utrecht 89.50315</span></span>
+<span><span class="co">#&gt; 184 Utrecht 87.50797</span></span>
+<span><span class="co">#&gt; 186 Utrecht 85.97956</span></span>
+<span><span class="co">#&gt; 187 Utrecht 89.90966</span></span>
+<span><span class="co">#&gt; 198 Utrecht 88.28770</span></span>
+<span><span class="co">#&gt; 199 Utrecht 87.49161</span></span>
+<span><span class="co">#&gt; 210 Utrecht 88.96904</span></span>
+<span><span class="co">#&gt; 221 Utrecht 87.29050</span></span>
+<span><span class="co">#&gt; 232 Utrecht 88.07628</span></span>
+<span><span class="co">#&gt; 243 Utrecht 88.30145</span></span>
+<span><span class="co">#&gt; 254 Utrecht 89.99270</span></span>
+<span><span class="co">#&gt; 265 Utrecht 86.93534</span></span>
+<span><span class="co">#&gt; 276 Utrecht 85.27940</span></span>
+<span><span class="co">#&gt; 287 Utrecht 86.99481</span></span>
+<span><span class="co">#&gt; 292 Utrecht 88.71485</span></span>
+<span><span class="co">#&gt; 297 Utrecht 87.30024</span></span>
+<span><span class="co">#&gt; 298 Utrecht 86.93515</span></span>
+<span><span class="co">#&gt; 299 Utrecht 87.80857</span></span>
+<span><span class="co">#&gt; 300 Utrecht 89.53896</span></span>
+<span><span class="co">#&gt; 305 Utrecht 89.33088</span></span>
+<span><span class="co">#&gt; 310 Utrecht 85.66993</span></span>
+<span><span class="co">#&gt; 312 Utrecht 85.16093</span></span>
+<span><span class="co">#&gt; 314 Utrecht 88.10882</span></span>
+<span><span class="co">#&gt; 319 Utrecht 87.50082</span></span>
+<span><span class="co">#&gt; 320 Utrecht 85.69867</span></span>
+<span><span class="co">#&gt; 321 Utrecht 85.07034</span></span>
+<span><span class="co">#&gt; 322 Utrecht 85.31280</span></span>
+<span><span class="co">#&gt; 326 Utrecht 85.13185</span></span>
+<span><span class="co">#&gt; 330 Utrecht 87.91193</span></span>
+<span><span class="co">#&gt; 334 Utrecht 86.34694</span></span>
+<span><span class="co">#&gt; 335 Utrecht 89.94202</span></span>
+<span><span class="co">#&gt; 336 Utrecht 86.11101</span></span>
+<span><span class="co">#&gt; 342 Utrecht 88.61264</span></span>
+<span><span class="co">#&gt; 348 Utrecht 85.95327</span></span>
+<span><span class="co">#&gt; 354 Utrecht 86.74848</span></span>
+<span><span class="co">#&gt; 356 Utrecht 86.78320</span></span>
+<span><span class="co">#&gt; 358 Utrecht 89.94061</span></span>
+<span><span class="co">#&gt; 359 Utrecht 87.39886</span></span>
+<span><span class="co">#&gt; 365 Utrecht 89.63372</span></span>
+<span><span class="co">#&gt; 369 Utrecht 85.80297</span></span>
+<span><span class="co">#&gt; 375 Utrecht 88.05693</span></span>
+<span><span class="co">#&gt; 376 Utrecht 87.89484</span></span>
+<span><span class="co">#&gt; 382 Utrecht 89.78863</span></span>
+<span><span class="co">#&gt; 383 Utrecht 85.62380</span></span>
+<span><span class="co">#&gt; 384 Utrecht 86.70502</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="using-function-three-and-looking-at-the-season-relationship-to-butterflies">Using Function Three and looking at the season relationship to
+Butterflies<a class="anchor" aria-label="anchor" href="#using-function-three-and-looking-at-the-season-relationship-to-butterflies"></a>
+</h2>
+<ul>
+<li><p>This function takes the data set and presents the average
+temperatures of the spring and summer season. Based on species, the
+values returned will prove that butterflies prefer the warmer weather by
+printing “best season”.</p></li>
+<li><p>This function takes one argument. The file path</p></li>
+<li><p>Example</p></li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
+<span><span class="fu">quantum</span><span class="fu">::</span><span class="fu"><a href="../reference/season.html">season</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 4</span></span></span>
+<span><span class="co">#&gt;    ButterflySpecies      Avg_SpringTemp Avg_SummerTemp Better_Season</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Coenonympha tullia              6.01           15.2 Summer       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Cupido amyntula                 6.48           15.4 Summer       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Euchloe ausonides               6.60           15.6 Summer       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Glaucopsyche lygdamus           6.27           15.3 Summer       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Ochlodes sylvanoides            6.80           16.3 Summer       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Papilio rutulus                 6.21           15.8 Summer       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Papilio zelicaon                6.36           15.6 Summer       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Plebejus icarioides             5.91           15.4 Summer       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Polygonia gracilis              6.08           15.5 Summer       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Speyeria cybele                 5.90           15.5 Summer       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> Speyeria hydaspe                6.24           15.9 Summer       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> Strymon melinus                 5.56           15.7 Summer</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="using-function-four">Using Function Four<a class="anchor" aria-label="anchor" href="#using-function-four"></a>
+</h2>
+<p>This function is meant to take the cleaned data set and perform an
+ANOVA to determine if there is any statistical difference in the
+sightings of different species in rainfall. The Tukey’s HSD Post-Hoc
+Test is meant to be performed if the ANOVA shows a big enough
+difference. The test is meant to single out which species differ from
+each other. Visualization</p>
+<ul>
+<li><p>This function takes three arguments.</p></li>
+<li><p>the file_path, species_col, rain_col.</p></li>
+<li><p>Example</p></li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="fu">quantum</span><span class="fu">::</span><span class="fu"><a href="../reference/ANOVA.html">ANOVA</a></span><span class="op">(</span><span class="va">file</span>, <span class="st">"ButterflySpecies"</span>, <span class="st">"Cumulative_Rain"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                   Df Sum Sq Mean Sq F value Pr(&gt;F)</span></span>
+<span><span class="co">#&gt; ButterflySpecies  11   67.6   6.149   0.634  0.797</span></span>
+<span><span class="co">#&gt; Residuals        132 1280.7   9.702               </span></span>
+<span><span class="co">#&gt;   Tukey multiple comparisons of means</span></span>
+<span><span class="co">#&gt;     95% family-wise confidence level</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Fit: aov(formula = as.formula(paste(rain_col, "~", species_col)), data = data)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ButterflySpecies</span></span>
+<span><span class="co">#&gt;                                                   diff        lwr       upr</span></span>
+<span><span class="co">#&gt; Cupido amyntula-Coenonympha tullia         -1.13317949  -5.787864  3.521505</span></span>
+<span><span class="co">#&gt; Euchloe ausonides-Coenonympha tullia        0.64383612  -3.800007  5.087679</span></span>
+<span><span class="co">#&gt; Glaucopsyche lygdamus-Coenonympha tullia    0.28918185  -4.154661  4.733025</span></span>
+<span><span class="co">#&gt; Ochlodes sylvanoides-Coenonympha tullia    -1.05205120  -4.959939  2.855836</span></span>
+<span><span class="co">#&gt; Papilio rutulus-Coenonympha tullia          1.92036102  -4.570287  8.411009</span></span>
+<span><span class="co">#&gt; Papilio zelicaon-Coenonympha tullia        -0.06715282  -2.904754  2.770448</span></span>
+<span><span class="co">#&gt; Plebejus icarioides-Coenonympha tullia     -0.34789176  -3.853242  3.157459</span></span>
+<span><span class="co">#&gt; Polygonia gracilis-Coenonympha tullia       2.63580472  -3.854843  9.126452</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Coenonympha tullia         -0.77051951  -7.261167  5.720128</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Coenonympha tullia        -2.30347165 -12.968694  8.361751</span></span>
+<span><span class="co">#&gt; Strymon melinus-Coenonympha tullia          0.74295645  -7.005148  8.491061</span></span>
+<span><span class="co">#&gt; Euchloe ausonides-Cupido amyntula           1.77701561  -3.587243  7.141275</span></span>
+<span><span class="co">#&gt; Glaucopsyche lygdamus-Cupido amyntula       1.42236134  -3.941898  6.786620</span></span>
+<span><span class="co">#&gt; Ochlodes sylvanoides-Cupido amyntula        0.08112829  -4.848286  5.010542</span></span>
+<span><span class="co">#&gt; Papilio rutulus-Cupido amyntula             3.05354051  -4.098805 10.205886</span></span>
+<span><span class="co">#&gt; Papilio zelicaon-Cupido amyntula            1.06602667  -3.066711  5.198764</span></span>
+<span><span class="co">#&gt; Plebejus icarioides-Cupido amyntula         0.78528773  -3.831531  5.402107</span></span>
+<span><span class="co">#&gt; Polygonia gracilis-Cupido amyntula          3.76898421  -3.383361 10.921330</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Cupido amyntula             0.36265998  -6.789685  7.515005</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Cupido amyntula           -1.17029216 -12.250658  9.910074</span></span>
+<span><span class="co">#&gt; Strymon melinus-Cupido amyntula             1.87613594  -6.434138 10.186410</span></span>
+<span><span class="co">#&gt; Glaucopsyche lygdamus-Euchloe ausonides    -0.35465426  -5.537021  4.827712</span></span>
+<span><span class="co">#&gt; Ochlodes sylvanoides-Euchloe ausonides     -1.69588731  -6.426719  3.034944</span></span>
+<span><span class="co">#&gt; Papilio rutulus-Euchloe ausonides           1.27652490  -5.740433  8.293482</span></span>
+<span><span class="co">#&gt; Papilio zelicaon-Euchloe ausonides         -0.71098894  -4.604723  3.182745</span></span>
+<span><span class="co">#&gt; Plebejus icarioides-Euchloe ausonides      -0.99172788  -5.395893  3.412437</span></span>
+<span><span class="co">#&gt; Polygonia gracilis-Euchloe ausonides        1.99196860  -5.024989  9.008926</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Euchloe ausonides          -1.41435563  -8.431313  5.602602</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Euchloe ausonides         -2.94730776 -13.940767  8.046152</span></span>
+<span><span class="co">#&gt; Strymon melinus-Euchloe ausonides           0.09912034  -8.094921  8.293161</span></span>
+<span><span class="co">#&gt; Ochlodes sylvanoides-Glaucopsyche lygdamus -1.34123305  -6.072065  3.389599</span></span>
+<span><span class="co">#&gt; Papilio rutulus-Glaucopsyche lygdamus       1.63117917  -5.385778  8.648137</span></span>
+<span><span class="co">#&gt; Papilio zelicaon-Glaucopsyche lygdamus     -0.35633467  -4.250069  3.537400</span></span>
+<span><span class="co">#&gt; Plebejus icarioides-Glaucopsyche lygdamus  -0.63707362  -5.041238  3.767091</span></span>
+<span><span class="co">#&gt; Polygonia gracilis-Glaucopsyche lygdamus    2.34662287  -4.670335  9.363580</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Glaucopsyche lygdamus      -1.05970137  -8.076659  5.957256</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Glaucopsyche lygdamus     -2.59265350 -13.586113  8.400806</span></span>
+<span><span class="co">#&gt; Strymon melinus-Glaucopsyche lygdamus       0.45377460  -7.740266  8.647816</span></span>
+<span><span class="co">#&gt; Papilio rutulus-Ochlodes sylvanoides        2.97241222  -3.717994  9.662819</span></span>
+<span><span class="co">#&gt; Papilio zelicaon-Ochlodes sylvanoides       0.98489838  -2.283895  4.253692</span></span>
+<span><span class="co">#&gt; Plebejus icarioides-Ochlodes sylvanoides    0.70415943  -3.158549  4.566867</span></span>
+<span><span class="co">#&gt; Polygonia gracilis-Ochlodes sylvanoides     3.68785592  -3.002551 10.378262</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Ochlodes sylvanoides        0.28153168  -6.408875  6.971938</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Ochlodes sylvanoides      -1.25142045 -12.039377  9.536536</span></span>
+<span><span class="co">#&gt; Strymon melinus-Ochlodes sylvanoides        1.79500765  -6.121188  9.711203</span></span>
+<span><span class="co">#&gt; Papilio zelicaon-Papilio rutulus           -1.98751384  -8.114661  4.139634</span></span>
+<span><span class="co">#&gt; Plebejus icarioides-Papilio rutulus        -2.26825278  -8.731799  4.195294</span></span>
+<span><span class="co">#&gt; Polygonia gracilis-Papilio rutulus          0.71544370  -7.747325  9.178213</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Papilio rutulus            -2.69088053 -11.153650  5.771889</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Papilio rutulus           -4.22383267 -16.191996  7.744330</span></span>
+<span><span class="co">#&gt; Strymon melinus-Papilio rutulus            -1.17740457 -10.639068  8.284259</span></span>
+<span><span class="co">#&gt; Plebejus icarioides-Papilio zelicaon       -0.28073894  -3.055790  2.494312</span></span>
+<span><span class="co">#&gt; Polygonia gracilis-Papilio zelicaon         2.70295754  -3.424190  8.830105</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Papilio zelicaon           -0.70336669  -6.830514  5.423781</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Papilio zelicaon          -2.23631883 -12.684304  8.211666</span></span>
+<span><span class="co">#&gt; Strymon melinus-Papilio zelicaon            0.81010927  -6.636135  8.256353</span></span>
+<span><span class="co">#&gt; Polygonia gracilis-Plebejus icarioides      2.98369648  -3.479850  9.447243</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Plebejus icarioides        -0.42262775  -6.886174  6.040919</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Plebejus icarioides       -1.95557988 -12.604331  8.693171</span></span>
+<span><span class="co">#&gt; Strymon melinus-Plebejus icarioides         1.09084822  -6.634568  8.816264</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Polygonia gracilis         -3.40632423 -11.869093  5.056445</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Polygonia gracilis        -4.93927637 -16.907439  7.028887</span></span>
+<span><span class="co">#&gt; Strymon melinus-Polygonia gracilis         -1.89284827 -11.354512  7.568815</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Speyeria cybele           -1.53295213 -13.501115 10.435211</span></span>
+<span><span class="co">#&gt; Strymon melinus-Speyeria cybele             1.51347597  -7.948188 10.975140</span></span>
+<span><span class="co">#&gt; Strymon melinus-Speyeria hydaspe            3.04642810  -9.647726 15.740582</span></span>
+<span><span class="co">#&gt;                                                p adj</span></span>
+<span><span class="co">#&gt; Cupido amyntula-Coenonympha tullia         0.9996390</span></span>
+<span><span class="co">#&gt; Euchloe ausonides-Coenonympha tullia       0.9999981</span></span>
+<span><span class="co">#&gt; Glaucopsyche lygdamus-Coenonympha tullia   1.0000000</span></span>
+<span><span class="co">#&gt; Ochlodes sylvanoides-Coenonympha tullia    0.9990689</span></span>
+<span><span class="co">#&gt; Papilio rutulus-Coenonympha tullia         0.9978012</span></span>
+<span><span class="co">#&gt; Papilio zelicaon-Coenonympha tullia        1.0000000</span></span>
+<span><span class="co">#&gt; Plebejus icarioides-Coenonympha tullia     1.0000000</span></span>
+<span><span class="co">#&gt; Polygonia gracilis-Coenonympha tullia      0.9703400</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Coenonympha tullia         0.9999998</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Coenonympha tullia        0.9998872</span></span>
+<span><span class="co">#&gt; Strymon melinus-Coenonympha tullia         1.0000000</span></span>
+<span><span class="co">#&gt; Euchloe ausonides-Cupido amyntula          0.9941191</span></span>
+<span><span class="co">#&gt; Glaucopsyche lygdamus-Cupido amyntula      0.9991914</span></span>
+<span><span class="co">#&gt; Ochlodes sylvanoides-Cupido amyntula       1.0000000</span></span>
+<span><span class="co">#&gt; Papilio rutulus-Cupido amyntula            0.9574376</span></span>
+<span><span class="co">#&gt; Papilio zelicaon-Cupido amyntula           0.9993752</span></span>
+<span><span class="co">#&gt; Plebejus icarioides-Cupido amyntula        0.9999898</span></span>
+<span><span class="co">#&gt; Polygonia gracilis-Cupido amyntula         0.8394605</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Cupido amyntula            1.0000000</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Cupido amyntula           0.9999999</span></span>
+<span><span class="co">#&gt; Strymon melinus-Cupido amyntula            0.9998258</span></span>
+<span><span class="co">#&gt; Glaucopsyche lygdamus-Euchloe ausonides    1.0000000</span></span>
+<span><span class="co">#&gt; Ochlodes sylvanoides-Euchloe ausonides     0.9887005</span></span>
+<span><span class="co">#&gt; Papilio rutulus-Euchloe ausonides          0.9999798</span></span>
+<span><span class="co">#&gt; Papilio zelicaon-Euchloe ausonides         0.9999790</span></span>
+<span><span class="co">#&gt; Plebejus icarioides-Euchloe ausonides      0.9998301</span></span>
+<span><span class="co">#&gt; Polygonia gracilis-Euchloe ausonides       0.9984851</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Euchloe ausonides          0.9999432</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Euchloe ausonides         0.9991041</span></span>
+<span><span class="co">#&gt; Strymon melinus-Euchloe ausonides          1.0000000</span></span>
+<span><span class="co">#&gt; Ochlodes sylvanoides-Glaucopsyche lygdamus 0.9985030</span></span>
+<span><span class="co">#&gt; Papilio rutulus-Glaucopsyche lygdamus      0.9997685</span></span>
+<span><span class="co">#&gt; Papilio zelicaon-Glaucopsyche lygdamus     1.0000000</span></span>
+<span><span class="co">#&gt; Plebejus icarioides-Glaucopsyche lygdamus  0.9999981</span></span>
+<span><span class="co">#&gt; Polygonia gracilis-Glaucopsyche lygdamus   0.9936297</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Glaucopsyche lygdamus      0.9999970</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Glaucopsyche lygdamus     0.9997339</span></span>
+<span><span class="co">#&gt; Strymon melinus-Glaucopsyche lygdamus      1.0000000</span></span>
+<span><span class="co">#&gt; Papilio rutulus-Ochlodes sylvanoides       0.9439165</span></span>
+<span><span class="co">#&gt; Papilio zelicaon-Ochlodes sylvanoides      0.9974144</span></span>
+<span><span class="co">#&gt; Plebejus icarioides-Ochlodes sylvanoides   0.9999794</span></span>
+<span><span class="co">#&gt; Polygonia gracilis-Ochlodes sylvanoides    0.7961245</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Ochlodes sylvanoides       1.0000000</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Ochlodes sylvanoides      0.9999998</span></span>
+<span><span class="co">#&gt; Strymon melinus-Ochlodes sylvanoides       0.9998182</span></span>
+<span><span class="co">#&gt; Papilio zelicaon-Papilio rutulus           0.9950823</span></span>
+<span><span class="co">#&gt; Plebejus icarioides-Papilio rutulus        0.9904957</span></span>
+<span><span class="co">#&gt; Polygonia gracilis-Papilio rutulus         1.0000000</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Papilio rutulus            0.9958580</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Papilio rutulus           0.9900456</span></span>
+<span><span class="co">#&gt; Strymon melinus-Papilio rutulus            0.9999996</span></span>
+<span><span class="co">#&gt; Plebejus icarioides-Papilio zelicaon       1.0000000</span></span>
+<span><span class="co">#&gt; Polygonia gracilis-Papilio zelicaon        0.9465587</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Papilio zelicaon           0.9999998</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Papilio zelicaon          0.9998968</span></span>
+<span><span class="co">#&gt; Strymon melinus-Papilio zelicaon           0.9999999</span></span>
+<span><span class="co">#&gt; Polygonia gracilis-Plebejus icarioides     0.9276393</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Plebejus icarioides        1.0000000</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Plebejus icarioides       0.9999778</span></span>
+<span><span class="co">#&gt; Strymon melinus-Plebejus icarioides        0.9999985</span></span>
+<span><span class="co">#&gt; Speyeria cybele-Polygonia gracilis         0.9722247</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Polygonia gracilis        0.9666168</span></span>
+<span><span class="co">#&gt; Strymon melinus-Polygonia gracilis         0.9999473</span></span>
+<span><span class="co">#&gt; Speyeria hydaspe-Speyeria cybele           0.9999995</span></span>
+<span><span class="co">#&gt; Strymon melinus-Speyeria cybele            0.9999946</span></span>
+<span><span class="co">#&gt; Strymon melinus-Speyeria hydaspe           0.9996853</span></span></code></pre></div>
+<p><img src="quantum_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+</div>
+<div class="section level2">
+<h2 id="using-function-five">Using Function Five<a class="anchor" aria-label="anchor" href="#using-function-five"></a>
+</h2>
+<ul>
+<li><p>This plots the clean data set and is a distribution of cumulative
+rain fall against the Utrecht site.</p></li>
+<li><p>This function takes one argument, the file path.</p></li>
+<li><p>Example</p></li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="fu">quantum</span><span class="fu">::</span><span class="fu"><a href="../reference/plot.html">plot</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></code></pre></div>
+<p><img src="quantum_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

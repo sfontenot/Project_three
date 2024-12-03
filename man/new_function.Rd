@@ -7,7 +7,7 @@
 new_function(filepath, column)
 }
 \arguments{
-\item{filepath}{The path to the tab_delimited file you want to use}
+\item{filepath}{The path to the file you want to use}
 
 \item{column}{what column you wish to filter}
 }

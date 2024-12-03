@@ -13,51 +13,97 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-## Intriducing the quantum compute package
+## Introducing the quantum compute package
 
-a few words about your motivation in writing this R package. What is it meant for, to do and what data does it work with?
+It is known that butterflies can be seen frequently in the summer time. Out of curiosity, I wanted to know which season was the best for the species of butterflies being observed in the given data set. The Quantum Compute package is meant to clean data and produce an analysis of butterfly sightings, and produce and output of what season is the best for each species being observed.  
 
 ## Installation Intructions
+
 ```{r setup}
+library(devtools)
 devtools::install_github("sfontenot/Project_three")
 library(quantum)
 ```
 
 ## Where to get the data
-+ could use google sheets and give people intructions for that 
-+ can stash data in an R package
+
+The following URL need to be assigned a variable
+
+https://raw.githubusercontent.com/sfontenot/Project_three/refs/heads/main/data/Butterly_data_by_Site.csv
+
+```{r}
+library(tidyverse)
+library(devtools)
+url <- "https://raw.githubusercontent.com/sfontenot/Project_three/refs/heads/main/data/Butterly_data_by_Site.csv"
+data <- read_csv(url)
+write_csv(data, "Butterly_data_by_Site.csv")
+
+```
 
 ## Using Function One
 
-```{r warning=FALSE}
++ This function takes only one argument, which is the file path in which the data set is stored. Assign the file path to a variable. It will clean the data of NA's and "non-observed" values.
 
-quantum::clean()
++ Example
+
+
+```{r warning=FALSE}
+library(tidyr)
+file <- "../data/Butterly_data_by_Site.csv"
+quantum::clean(file)
 
 ```
-+This Function uses one argument and that is simply a file path. This will clean your data and also change the characters to factors. 
-
 
 ## Using function Two and getting data less than 5
+
++ This function takes two arguments and has no practical reason except that I wanted to make it. Give the file path used for the clean function, and a column in the data set. This function takes that column and divides it by two, filters that values less than 5 and returns the output of the new column. 
+
++ Example
+
 ```{r}
-quantum::bubble()
+library(tidyr)
+quantum::bubble(file, "Cumulative_Rain")
 
 ```
 
 ## Using Function Three and looking at the season relationship to Butterflies
 
-```{r}
++ This function takes the data set and presents the average temperatures of the spring and summer season. Based on species, the values returned will prove that butterflies prefer the warmer weather by printing "best season".
++ This function takes one argument. The file path
 
-quantum::seasons()
++ Example
+
+```{r}
+library(tidyr)
+quantum::season(file)
 ```
 
 
 ## Using Function Four
-```{r}
 
-quantum::ANOVA()
+ This function is meant to take the cleaned data set and perform an ANOVA to determine if there is any statistical difference in the sightings of different species in rainfall.
+ The Tukey's HSD Post-Hoc Test is meant to be performed if the ANOVA shows a big enough difference. The test is meant to single out which species differ from each other.
+ Visualization
+ 
++ This function takes three arguments. 
++  the file_path, species_col, rain_col.
+
++ Example
+
+```{r}
+library(ggplot2)
+quantum::ANOVA(file, "ButterflySpecies", "Cumulative_Rain")
 ```
+
+
 ## Using Function Five
 
++ This plots the clean data set and is a distribution of cumulative rain fall against the Utrecht site.
++ This function takes one argument, the file path.
+
++ Example
+
 ```{r}
-quantum::plot()
+library(ggplot2)
+quantum::plot(file)
 ```

@@ -1,6 +1,6 @@
 #' Remove NAs and prints the values that are greater than five in a column
 #'
-#' @param filepath The path to the tab_delimited file you want to use
+#' @param filepath The path to the file you want to use
 #' @param column what column you wish to filter
 #'
 #' @return The problem values

@@ -22,7 +22,7 @@ surveys_complete <- read.csv(file) %>%
   mutate(hindfoot_length, weight)
 # read in data here
 print(surveys_complete)
-
+# AMW: Very nice. 
 ```
 
 ```
@@ -74,7 +74,7 @@ Id say that my predictor is close but not close enough. There are ways to make i
 
 5) Plot the model on the graph. Increase the size of the text so it is comfortably readable at 5 feet. Make sure axis labels are readable and not overlapping with one another. (5 pts)
 
-```
+```{r}
 ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length)) +
   geom_point(size = 3) +  # Increase size of points
   geom_smooth(method = "lm", se = FALSE, color = "blue", size = 1.5) +  
@@ -90,6 +90,8 @@ ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length)) 
   ) +
   theme_minimal() 
   # Code here
+
+# AMW: Axes on this look really nice. Very readable.
 ```
 
 
@@ -114,7 +116,7 @@ ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length)) 
 residuals <- residuals(model)
 hist(residuals, breaks = 10, main = "Histogram of Residuals", xlab = "Residuals", col = "pink", border = "black")
 
-
+#AMW: I never thought of doing the residuals like this, but it works.
 
 
 ```
@@ -218,6 +220,8 @@ ggplot(data = surveys_complete, mapping = aes(x = hindfoot_length, y = weight, c
        x = "Hindfoot Length",
        y = "Weight") +
   theme_minimal()# Plot Code Here 
+
+#AMW: Oh, wow, those are some COLORS. 
 ```
 
 ```
